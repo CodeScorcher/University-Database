@@ -18,4 +18,14 @@ Once the file is loaded, the database can be accessed
 ![LoadedCSV](https://github.com/CodeScorcher/University-Database/assets/43505376/81e0200d-b309-4957-a5c0-0c20ac3fdda9)
 
 ### Adding New Data Entry
-WIP
+Click the *Add* option
+
+![AddOption](https://github.com/CodeScorcher/University-Database/assets/43505376/0bd96902-46c3-4019-b545-43e4cd03e3f9)
+
+Fill out the required fields and press submit to add a new entry
+
+![AddEntry](https://github.com/CodeScorcher/University-Database/assets/43505376/8d4b007d-8afc-4681-9231-7da9e8acb78c)
+
+Once the required information is provided, the new entry will appear in the database
+
+![DataEntry](https://github.com/CodeScorcher/University-Database/assets/43505376/b7c09f0c-864c-41da-a235-e05787d88875)
