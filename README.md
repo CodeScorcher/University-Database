@@ -5,7 +5,7 @@ Database which stores data entries representing students, faculty, and staff. De
 Download and run the file *UniversityCSVDatabase-1.0.exe* to install the application.
 
 ### Reading a CSV File
-WIP
+![ReadCSV](https://github.com/CodeScorcher/University-Database/assets/43505376/6f77cef2-8c77-4b27-93a0-1147b1fc1062)
 
 ### Adding New Data Entry
 WIP
