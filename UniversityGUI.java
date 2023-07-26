@@ -46,7 +46,6 @@ public class UniversityGUI extends Application {
 		// TableView, TableColumn, and TableCell are used to display and modify a table.
 		// Create an instance of table view to display data.
 		TableView<Person> tableView = new TableView<>();
-		// tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
 		ObservableList<Person> data = tableView.getItems();
 		data.addAll(database);
@@ -132,77 +131,43 @@ public class UniversityGUI extends Application {
 		
 		phoneNumberColumn.setCellValueFactory(phoneNumberColumnCellValue);
 		
-		// Create table column for student information (class standing, GPA).
-		TableColumn<Person, String> studentColumn = new TableColumn<>("Student Info");
-		studentColumn.setMinWidth(150);
+		// Create table column for entry information depending on whether it is a student, faculty, or staff.
+		TableColumn<Person, String> entryInfoColumn = new TableColumn<>("Entry Info");
+		entryInfoColumn.setMinWidth(150);
 		
 		Callback<CellDataFeatures<Person, String>, ObservableValue<String>> studentColumnCellValue;
 		
 		studentColumnCellValue = cellDataFeatures -> {
 			Student student;
-			String studentData;
+			Faculty faculty;
+			Staff staff;
+			String entryData;
 			
 			if(cellDataFeatures.getValue().getClass().getTypeName() == "application.Student") {
 				student = (Student) cellDataFeatures.getValue();
-				studentData = "Class Standing: " + student.getClassStanding() + "\nGPA: " + student.getGpa();
-				ObservableValue<String> studentObservableValue = new SimpleStringProperty(studentData);
+				entryData = "---Student Info---\nClass Standing: " + student.getClassStanding() + "\nGPA: " + student.getGpa();
+				ObservableValue<String> studentObservableValue = new SimpleStringProperty(entryData);
 				return studentObservableValue;
 			}
-			
-			studentData = "-";
-			ObservableValue<String> studentObservableValue = new SimpleStringProperty(studentData);
-			return studentObservableValue;
-		};
-		
-		studentColumn.setCellValueFactory(studentColumnCellValue);
-		
-		// Create table column for faculty information (office location, salary, office hours, rank).
-		TableColumn<Person, String> facultyColumn = new TableColumn<>("Faculty Info");
-		facultyColumn.setMinWidth(180);
-		
-		Callback<CellDataFeatures<Person, String>, ObservableValue<String>> facultyColumnCellValue;
-		
-		facultyColumnCellValue = cellDataFeatures -> {
-			Faculty faculty;
-			String facultyData;
-			
-			if(cellDataFeatures.getValue().getClass().getTypeName() == "application.Faculty") {
+			else if(cellDataFeatures.getValue().getClass().getTypeName() == "application.Faculty") {
 				faculty = (Faculty) cellDataFeatures.getValue();
-				facultyData = "Office Location: " + faculty.getOfficeLocation() + "\nOffice Hours: " + faculty.getOfficeHours() + "\nRank: " + faculty.getRank();
-				ObservableValue<String> facultyObservableValue = new SimpleStringProperty(facultyData);
+				entryData = "---Faculty Info---\nOffice Location: " + faculty.getOfficeLocation() + "\nOffice Hours: " + faculty.getOfficeHours() + "\nRank: " + faculty.getRank();
+				ObservableValue<String> facultyObservableValue = new SimpleStringProperty(entryData);
 				return facultyObservableValue;
 			}
-			
-			facultyData = "-";
-			ObservableValue<String> facultyObservableValue = new SimpleStringProperty(facultyData);
-			return facultyObservableValue;
-		};
-		
-		facultyColumn.setCellValueFactory(facultyColumnCellValue);
-		
-		// Create table column for staff information (office location, salary, job title).
-		TableColumn<Person, String> staffColumn = new TableColumn<>("Staff Info");
-		staffColumn.setMinWidth(220);
-		
-		Callback<CellDataFeatures<Person, String>, ObservableValue<String>> staffColumnCellValue;
-		
-		staffColumnCellValue = cellDataFeatures -> {
-			Staff staff;
-			String staffData;
-			
-			if(cellDataFeatures.getValue().getClass().getTypeName() == "application.Staff") {
+			else if(cellDataFeatures.getValue().getClass().getTypeName() == "application.Staff") {
 				staff = (Staff) cellDataFeatures.getValue();
-				staffData = "Office Location: " + staff.getOfficeLocation() + "\nJob Title: " + staff.getJobTitle() + "\nSalary: " + staff.getSalary();
-				ObservableValue<String> staffObservableValue = new SimpleStringProperty(staffData);
+				entryData = "---Staff Info---\nOffice Location: " + staff.getOfficeLocation() + "\nJob Title: " + staff.getJobTitle() + "\nSalary: " + staff.getSalary();
+				ObservableValue<String> staffObservableValue = new SimpleStringProperty(entryData);
 				return staffObservableValue;
 			}
 			
-			staffData = "-";
-			ObservableValue<String> staffObservableValue = new SimpleStringProperty(staffData);
-			return staffObservableValue;
+			entryData = "-";
+			ObservableValue<String> studentObservableValue = new SimpleStringProperty(entryData);
+			return studentObservableValue;
 		};
 		
-		staffColumn.setCellValueFactory(staffColumnCellValue);
+		entryInfoColumn.setCellValueFactory(studentColumnCellValue);
 		
 		tableView.setItems(data);
 		tableView.getColumns().add(firstNameColumn);
@@ -210,9 +175,14 @@ public class UniversityGUI extends Application {
 		tableView.getColumns().add(emailColumn);
 		tableView.getColumns().add(addressColumn);
 		tableView.getColumns().add(phoneNumberColumn);
-		tableView.getColumns().add(studentColumn);
-		tableView.getColumns().add(facultyColumn);
-		tableView.getColumns().add(staffColumn);
+		tableView.getColumns().add(entryInfoColumn);
+		
+		firstNameColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));
+        lastNameColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));
+        emailColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));
+        addressColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.285));
+        phoneNumberColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.2));
+        entryInfoColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.2));      
 		
 		// Create file chooser and set its extension filter to only accept comma-separated values (csv) files.
 		FileChooser fileChooser = new FileChooser();
@@ -279,8 +249,6 @@ public class UniversityGUI extends Application {
 			TextField zipCode = new TextField();
 			zipCode.setMaxWidth(150);
 			GridPane.setConstraints(zipCode, 1, 5);
-			
-			
 			
 			HBox phoneNumberBox = new HBox();
 			phoneNumberBox.setSpacing(15);
@@ -569,7 +537,7 @@ public class UniversityGUI extends Application {
 		Scene scene = new Scene(rootPane, 800, 550);
 		
 		// Database icon provided by Icons8 (https://icons8.com/icon/Poo34OcLGqWZ/database)
-		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
+		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("gui_icon.png")));
 		
 		primaryStage.setTitle("University Database");
 		primaryStage.setMaximized(true);
